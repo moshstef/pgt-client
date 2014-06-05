@@ -10,8 +10,7 @@
      </resultMap>
 
     <select id="getAllUsers" resultMap="userMap">
-        SELECT id,name,age
-        FROM users
+        SELECT id,name,age FROM users
     </select>
 
     <insert id="saveUser" parameterType="user">
