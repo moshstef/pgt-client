@@ -2,17 +2,27 @@ package pgtest.security.domain;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by moshstef on 6/10/14.
  */
 public class User  implements UserDetails {
+    private Long id;
     private String username;
     private String password;
     private boolean enabled;
     private List<Authority> authorities;
     private List<Role> roles;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -67,5 +77,12 @@ public class User  implements UserDetails {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        if (roles == null) {
+            roles = new ArrayList<Role>();
+        }
+        roles.add(role);
     }
 }

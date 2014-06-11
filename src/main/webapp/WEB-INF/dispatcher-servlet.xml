@@ -17,7 +17,7 @@
 
 
 
-    <context:component-scan base-package="velti.tech.pms"/>
+    <context:component-scan base-package="pgtest"/>
 
 
     <!-- Saves a locale change using a cookie -->

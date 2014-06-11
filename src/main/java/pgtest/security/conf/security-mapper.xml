@@ -5,54 +5,78 @@
 <mapper namespace="pgtest.security.dao.SecurityDao">
 
     <resultMap id="userMap" type="user">
-         <id property="username" column="username"/>
+         <id property="id" column="user_id"/>
+         <result property="username" column="username"/>
          <result property="password" column="password"/>
          <result property="enabled" column="enabled"/>
-         <collection property="roles" select="loadRolesForUser" column="username"/>
+         <collection property="roles" select="loadRolesForUser" column="user_id"/>
+         <collection property="authorities" select="loadAuthoritiesForUser" column="user_id"/>
      </resultMap>
 
     <resultMap id="roleMap" type="role">
-        <id property="role" column="role" />
+        <id property="id" column="role_id" />
+        <result property="name" column="role_name" />
     </resultMap>
 
     <resultMap id="authorityMap" type="authority">
-        <id property="authority" column="authority" />
+        <id property="id" column="authority_id" />
+        <result property="authority" column="authority_name" />
     </resultMap>
 
-    <select id="loadRolesForUser" resultMap="roleMap" parameterType="string">
-        select role from security_user_role where username = #{username}
+    <select id="loadRolesForUser" resultMap="roleMap" parameterType="long">
+        select * from sec_role where role_id in (select role_id from sec_user_role where user_id = #{user_id})
+    </select>
+
+    <select id="loadAuthoritiesForUser" resultMap="authorityMap" parameterType="long">
+        select a.* from sec_authority a
+          inner join sec_role_authority ra on a.authority_id = ra.authority_id
+          inner join sec_user_role ur on ra.role_id = ur.role_id
+          where ur.user_id = #{user_id}
+    </select>
+
+
+    <select id="loadAllRoles" resultMap="roleMap">
+        select * from sec_role
     </select>
 
     <select id="loadAllUsers" resultMap="userMap">
-        SELECT * FROM security_user
+        SELECT * FROM sec_user
     </select>
 
-    <select id="loadUser" resultMap="userMap" parameterType="string">
-        SELECT * FROM security_user where username = #{username}
+    <select id="loadUser" resultMap="userMap" parameterType="long">
+        SELECT * FROM sec_user where user_id = #{user_id}
+    </select>
+
+
+    <select id="loadUserByUsername" resultMap="userMap" parameterType="string">
+        SELECT * FROM sec_user where username = #{username}
     </select>
 
     <insert id="createUser" parameterType="user">
-        INSERT INTO security_user (username, password, enabled)
-        VALUES (#{username}, #{password}, #{enabled})
+        <selectKey keyProperty="id" order="BEFORE" resultType="long">
+            select nextval('seq_user_id')
+        </selectKey>
+        INSERT INTO sec_user (user_id, username, password, enabled)
+        VALUES (#{id},#{username}, #{password}, #{enabled})
     </insert>
 
     <update id="updateUser" parameterType="user">
-        UPDATE security_user
+        UPDATE sec_user
         SET
-        name = #{name},
+        username = #{username},
          password = #{password},
          enabled = #{enabled}
-        where username = #{username}
+        where user_id = #{id}
     </update>
 
-    <delete id="deleteUser" parameterType="string">
-        DELETE FROM security_user
-        WHERE username = #{username}
+    <delete id="deleteUser" parameterType="long">
+        DELETE FROM sec_user
+        WHERE user_id = #{user_id}
     </delete>
 
     <insert id="createUserRole" parameterType="map">
-        INSERT INTO security_user_role (username, role)
-        VALUES (#{username}, #{role})
+        INSERT INTO sec_user_role (user_id, role_id)
+        VALUES (#{userId}, #{roleId})
     </insert>
 
 </mapper>

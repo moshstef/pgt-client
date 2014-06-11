@@ -6,22 +6,31 @@ import java.util.List;
  * Created by moshstef on 6/10/14.
  */
 public class Role {
-    private String role;
+    private Long id;
+    private String name;
     private List<Authority> authorities;
 
     public Role() {
     }
 
-    public Role(String role) {
-        this.role = role;
+    public Role(Long id) {
+        this.id = id;
     }
 
-    public String getRole() {
-        return role;
+    public Long getId() {
+        return id;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Authority> getAuthorities() {
