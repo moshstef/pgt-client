@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pgtest.security.dao.SecurityDao">
+
+    <resultMap id="userMap" type="user">
+         <id property="username" column="username"/>
+         <result property="password" column="password"/>
+         <result property="enabled" column="enabled"/>
+         <collection property="roles" select="loadRolesForUser" column="username"/>
+     </resultMap>
+
+    <resultMap id="roleMap" type="role">
+        <id property="role" column="role" />
+    </resultMap>
+
+    <resultMap id="authorityMap" type="authority">
+        <id property="authority" column="authority" />
+    </resultMap>
+
+    <select id="loadRolesForUser" resultMap="roleMap" parameterType="string">
+        select role from security_user_role where username = #{username}
+    </select>
+
+    <select id="loadAllUsers" resultMap="userMap">
+        SELECT * FROM security_user
+    </select>
+
+    <select id="loadUser" resultMap="userMap" parameterType="string">
+        SELECT * FROM security_user where username = #{username}
+    </select>
+
+    <insert id="createUser" parameterType="user">
+        INSERT INTO security_user (username, password, enabled)
+        VALUES (#{username}, #{password}, #{enabled})
+    </insert>
+
+    <update id="updateUser" parameterType="user">
+        UPDATE security_user
+        SET
+        name = #{name},
+         password = #{password},
+         enabled = #{enabled}
+        where username = #{username}
+    </update>
+
+    <delete id="deleteUser" parameterType="string">
+        DELETE FROM security_user
+        WHERE username = #{username}
+    </delete>
+
+    <insert id="createUserRole" parameterType="map">
+        INSERT INTO security_user_role (username, role)
+        VALUES (#{username}, #{role})
+    </insert>
+
+</mapper>

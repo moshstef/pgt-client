@@ -23,28 +23,8 @@ public class BaseServiceTestCase {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    UserDao userDao;
 
-    @Test
-    public void testTwo() throws Exception {
-       List<User> users = userDao.getAllUsers();
-        for (User user : users) {
-            System.out.println(user.getName());
-        }
 
-    }
 
-    @Test
-    public void testOne() throws Exception {
-        List<Map<String,Object>> a = jdbcTemplate.queryForList("SELECT * FROM users");
-        for (Map<String, Object> stringObjectMap : a) {
-            for (String s : stringObjectMap.keySet()) {
-                System.out.println(s + "->" + stringObjectMap.get(s));
-            }
-            System.out.println("----");
-
-        }
-    }
 }
 

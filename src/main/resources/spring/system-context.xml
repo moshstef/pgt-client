@@ -40,15 +40,12 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="configLocation" value="mybatis/sqlmap-config.xml" />
-        <property name="mapperLocations" value="/mybatis/UserDao-mapper.xml" />
+        <property name="mapperLocations" value="classpath*:pgtest/**/*-mapper.xml" />
     </bean>
 
     <!-- scan for mappers and let them be autowired -->
 
-    <bean id="userDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="pgtest.dao.UserDao"/>
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
-    </bean>
 
+    <import resource="classpath*:pgtest/**/*-context.xml"/>
 
 </beans>

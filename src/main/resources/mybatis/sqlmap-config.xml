@@ -9,6 +9,8 @@
         <setting name="lazyLoadingEnabled" value="false" />
     </settings>
     <typeAliases>
-        <typeAlias type="pgtest.domain.User" alias="user"/>
+        <typeAlias type="pgtest.security.domain.User" alias="user"/>
+        <typeAlias type="pgtest.security.domain.Role" alias="role"/>
+        <typeAlias type="pgtest.security.domain.Authority" alias="authority"/>
     </typeAliases>
 </configuration>
