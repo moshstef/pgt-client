@@ -9,6 +9,7 @@
          <result property="username" column="username"/>
          <result property="password" column="password"/>
          <result property="enabled" column="enabled"/>
+         <result property="loginTries" column="login_tries"/>
          <collection property="roles" select="loadRolesForUser" column="user_id"/>
          <collection property="authorities" select="loadAuthoritiesForUser" column="user_id"/>
      </resultMap>
@@ -65,7 +66,21 @@
         SET
         username = #{username},
          password = #{password},
-         enabled = #{enabled}
+         enabled = #{enabled},
+         login_tries = #{loginTries}
+        where user_id = #{id}
+    </update>
+
+
+    <update id="increaseLoginTries" parameterType="long">
+        UPDATE sec_user
+        SET login_tries = login_tries+1
+        where user_id = #{id}
+    </update>
+
+    <update id="updateLastLoginDate" parameterType="long">
+        UPDATE sec_user
+        SET last_login_date = current_time
         where user_id = #{id}
     </update>
 

@@ -1,7 +1,6 @@
 package pgtest.security.dao;
 
 import org.apache.ibatis.annotations.Param;
-import org.springframework.security.core.userdetails.UserDetails;
 import pgtest.security.domain.Role;
 import pgtest.security.domain.User;
 
@@ -27,4 +26,8 @@ public interface SecurityDao {
     List<Role> loadAllRoles();
 
     User loadUserByUsername(String username);
+
+    int increaseLoginTries(Long userId);
+
+    int updateLastLoginInfoForUser(Long userId);
 }

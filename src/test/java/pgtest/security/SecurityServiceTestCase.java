@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import pgtest.security.domain.Role;
 import pgtest.security.domain.User;
 import pgtest.BaseServiceTestCase;
+import pgtest.security.service.SecurityService;
 
 import java.util.List;
 

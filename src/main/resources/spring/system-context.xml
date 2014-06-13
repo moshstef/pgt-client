@@ -12,7 +12,7 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-    <context:property-placeholder location="/system.properties" />
+    <context:property-placeholder location="classpath:system.properties" />
 
     <!-- Enable annotation style of managing transactions -->
     <tx:annotation-driven transaction-manager="transactionManager" />
@@ -39,7 +39,7 @@
     <!-- define the SqlSessionFactory, notice that configLocation is not needed when you use MapperFactoryBean -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="configLocation" value="mybatis/sqlmap-config.xml" />
+        <property name="configLocation" value="classpath:mybatis/sqlmap-config.xml" />
         <property name="mapperLocations" value="classpath*:pgtest/**/*-mapper.xml" />
     </bean>
 

@@ -21,7 +21,8 @@ CREATE TABLE sec_user
     user_id integer PRIMARY KEY NOT NULL,
     username VARCHAR(60)  UNIQUE NOT NULL,
     password VARCHAR(200) NOT NULL,
-    enabled BOOL DEFAULT true NOT NULL
+    enabled BOOL DEFAULT true NOT NULL,
+    login_tries integer default 0
 );
 CREATE TABLE sec_user_role
 (

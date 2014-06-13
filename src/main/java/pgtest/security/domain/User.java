@@ -13,6 +13,7 @@ public class User  implements UserDetails {
     private String username;
     private String password;
     private boolean enabled;
+    private int loginTries;
     private List<Authority> authorities;
     private List<Role> roles;
 
@@ -61,6 +62,14 @@ public class User  implements UserDetails {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public int getLoginTries() {
+        return loginTries;
+    }
+
+    public void setLoginTries(int loginTries) {
+        this.loginTries = loginTries;
     }
 
     public List<Authority> getAuthorities() {
