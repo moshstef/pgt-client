@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import pgtest.security.domain.Role;
 import pgtest.security.domain.User;
 import pgtest.BaseServiceTestCase;
-import pgtest.security.service.SecurityService;
+import pgtest.security.service.ISecurityService;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public class SecurityServiceTestCase  extends BaseServiceTestCase {
 
     @Autowired
-    SecurityService securityService;
+    ISecurityService ISecurityService;
 
     @Test
     public void testCreateUser() throws Exception {
@@ -27,15 +27,15 @@ public class SecurityServiceTestCase  extends BaseServiceTestCase {
         user.setPassword(password);
         user.setEnabled(true);
 
-        List<Role> roles = securityService.loadAllRoles();
+        List<Role> roles = ISecurityService.loadAllRoles();
 
         user.addRole(roles.get(0));
         user.addRole(roles.get(1));
-        securityService.createUser(user);
+        ISecurityService.createUser(user);
         Assert.assertNotNull(user.getId());
 
 
-        User loaded = securityService.loadUser(user.getId());
+        User loaded = ISecurityService.loadUser(user.getId());
         Assert.assertNotNull(loaded);
         Assert.assertEquals(username, loaded.getUsername());
         Assert.assertEquals(password, loaded.getPassword());

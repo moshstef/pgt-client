@@ -5,7 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
         http://www.springframework.org/schema/security
-        http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+        http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
     <security:http auto-config="false" entry-point-ref="daep" use-expressions="true">
         <!--<security:custom-filter position="CONCURRENT_SESSION_FILTER" ref="concurrencyFilter"/>-->
@@ -36,7 +36,7 @@
         <constructor-arg value="/cgi/login"/>
     </bean>
 
-    <bean id="logoutSuccessHandler" class="pgtest.security.web.LogoutCustomSuccessHandler"/>
+    <bean id="logoutSuccessHandler" class="pgtest.security.handler.LogoutCustomSuccessHandler"/>
     <bean id="logoutHandler" class="pgtest.security.handler.LogoutCustomHandler">
 <!--
         <property name="forgetMe" ref="rememberMeServices"/>
@@ -46,7 +46,6 @@
     <bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
         <constructor-arg ref="logoutSuccessHandler"/>
         <constructor-arg ref="logoutHandler"/>
-        <property name="filterProcessesUrl" value="/logout"/>
     </bean>
 
     <security:authentication-manager alias="authenticationManager">
@@ -83,9 +82,12 @@
     </bean>
 
     <bean id="authenticationSuccess" class="pgtest.security.handler.LoginCustomSuccessHandler">
+        <property name="securityService" ref="securityService" />
+        <property name="auditService" ref="auditService" />
     </bean>
 
     <bean id="authenticationFailure" class="pgtest.security.handler.AuthenticationFailure">
+        <property name="securityService" ref="securityService" />
     </bean>
 
     <bean id="sas" class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
@@ -103,6 +105,8 @@
     </bean>
 
     <bean id="securityService" class="pgtest.security.service.SecurityService">
+        <property name="passwordEncryption" ref="passwordEncryption"/>
+        <property name="securityDao" ref="securityDao"/>
     </bean>
 
     <bean id="securityDao" class="org.mybatis.spring.mapper.MapperFactoryBean">

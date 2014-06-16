@@ -1,12 +1,11 @@
 package pgtest.security.handler;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import pgtest.security.domain.User;
-import pgtest.security.service.SecurityService;
+import pgtest.security.service.ISecurityService;
 import pgtest.websupport.Message;
 import pgtest.websupport.MessageHolder;
 import pgtest.websupport.MessageType;
@@ -23,8 +22,7 @@ import java.util.Map;
 public class AuthenticationFailure implements AuthenticationFailureHandler {
     private static final Logger log = Logger.getLogger(AuthenticationFailure.class);
 
-    @Autowired
-    private SecurityService securityService;
+    private ISecurityService ISecurityService;
 
 
     @Override
@@ -35,7 +33,7 @@ public class AuthenticationFailure implements AuthenticationFailureHandler {
         if (e.getExtraInformation() != null) {
             User user = (User) e.getExtraInformation();
             if (e instanceof BadCredentialsException) {
-                securityService.increaseLoginTries(user.getId());
+                ISecurityService.increaseLoginTries(user.getId());
                 putFlashMessage("bad.credentials", request);
                 response.sendRedirect(request.getSession().getServletContext().getContextPath() + "/cgi/login");
                 return;
@@ -53,7 +51,9 @@ public class AuthenticationFailure implements AuthenticationFailureHandler {
             if (e instanceof BadCredentialsException) {
                 putFlashMessage("bad.credentials", request);
             } else {
+                log.error("Unexpected authentication error",e);
                 putFlashMessage("problem.withRetrievingUserAccount", request);
+
             }
             response.sendRedirect(request.getSession().getServletContext().getContextPath() + "/cgi/login");
         }
@@ -68,4 +68,7 @@ public class AuthenticationFailure implements AuthenticationFailureHandler {
         request.getSession().setAttribute(MessageHolder.FLASH_MAP_ATTRIBUTE, map);
     }
 
+    public void setSecurityService(ISecurityService ISecurityService) {
+        this.ISecurityService = ISecurityService;
+    }
 }

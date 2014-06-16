@@ -78,9 +78,9 @@
         where user_id = #{id}
     </update>
 
-    <update id="updateLastLoginDate" parameterType="long">
+    <update id="updateLastLoginInfoForUser" parameterType="long">
         UPDATE sec_user
-        SET last_login_date = current_time
+        SET last_login_date = localtimestamp
         where user_id = #{id}
     </update>
 

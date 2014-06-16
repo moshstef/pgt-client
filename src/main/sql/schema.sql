@@ -31,3 +31,17 @@ CREATE TABLE sec_user_role
     PRIMARY KEY  (role_id, user_id)
 );
 
+
+
+create table audit_trace
+(
+  audit_trace_id              serial primary key not null,
+  audit_trace_name            varchar(200) not null,
+  audit_trace_session_id      varchar(500) not null,
+  audit_trace_user_id         integer not null references sec_user(user_id),
+  audit_trace_user_ip         varchar(300) not null,
+  audit_trace_timestamp       timestamp not null,
+  audit_trace_method_name     varchar(200),
+  audit_trace_method_params   text,
+  audit_trace_request_params  text
+);

@@ -21,6 +21,7 @@
 
 <body>
 
+<@tiles.insertAttribute name="main"  />
 
 
 </body>

@@ -12,5 +12,6 @@
         <typeAlias type="pgtest.security.domain.User" alias="user"/>
         <typeAlias type="pgtest.security.domain.Role" alias="role"/>
         <typeAlias type="pgtest.security.domain.Authority" alias="authority"/>
+        <typeAlias type="pgtest.audit.domain.AuditTrace" alias="auditTrace"/>
     </typeAliases>
 </configuration>

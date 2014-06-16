@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pgtest.audit.dao.AuditDao">
+
+    <resultMap id="auditMap" type="auditTrace">
+        <id property="id" column="AUDIT_TRACE_ID"/>
+        <result property="name" column="AUDIT_TRACE_NAME"/>
+        <result property="sessionId" column="AUDIT_TRACE_SESSION_ID"/>
+        <result property="userId" column="AUDIT_TRACE_USER_ID"/>
+        <result property="ip" column="AUDIT_TRACE_USER_IP"/>
+        <result property="auditDate" column="AUDIT_TRACE_TIMESTAMP"/>
+        <result property="methodName" column="AUDIT_TRACE_METHOD_NAME"/>
+        <result property="methodParameters" column="AUDIT_TRACE_METHOD_PARAMS"/>
+        <result property="requestParameters" column="AUDIT_TRACE_REQUEST_PARAMS"/>
+    </resultMap>
+
+    <insert id="insertAuditTrace" parameterType="auditTrace">
+      <selectKey keyProperty="id" resultType="long" order="BEFORE">
+        select nextval('audit_trace_audit_trace_id_seq')
+      </selectKey>
+      insert into audit_trace
+        (audit_trace_id, audit_trace_name,audit_trace_session_id,
+         audit_trace_user_id, audit_trace_user_ip, audit_trace_timestamp,
+        audit_trace_method_name, audit_trace_method_params, audit_trace_request_params)
+      values
+         (#{id}, #{name}, #{sessionId}, #{userId}, #{ip}, localtimestamp, #{methodName}, #{methodParameters}, #{requestParameters})
+    </insert>
+
+</mapper>

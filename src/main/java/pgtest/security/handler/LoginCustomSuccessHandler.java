@@ -6,7 +6,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import pgtest.audit.domain.AuditTrace;
 import pgtest.audit.service.AuditService;
 import pgtest.security.domain.User;
-import pgtest.security.service.SecurityService;
+import pgtest.security.service.ISecurityService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class LoginCustomSuccessHandler implements AuthenticationSuccessHandler {
 
-    private SecurityService securityService;
+    private ISecurityService securityService;
     private AuditService auditService;
 
     /**
@@ -38,7 +38,7 @@ public class LoginCustomSuccessHandler implements AuthenticationSuccessHandler {
         auditTrace.setSessionId(request.getSession().getId());
         auditService.insertAuditTrace(auditTrace);
 
-        response.sendRedirect(request.getSession().getServletContext().getContextPath() + "cgi/home");
+        response.sendRedirect(request.getSession().getServletContext().getContextPath() + "/cgi/secured/home");
     }
 
     /**
@@ -55,5 +55,11 @@ public class LoginCustomSuccessHandler implements AuthenticationSuccessHandler {
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
     }
 
+    public void setSecurityService(ISecurityService securityService) {
+        this.securityService = securityService;
+    }
 
+    public void setAuditService(AuditService auditService) {
+        this.auditService = auditService;
+    }
 }

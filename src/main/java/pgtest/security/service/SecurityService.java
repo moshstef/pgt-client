@@ -15,14 +15,13 @@ import java.util.List;
 /**
  * Created by moshstef on 6/10/14.
  */
-public class SecurityService implements UserDetailsService{
+public class SecurityService implements  ISecurityService {
 
-    @Autowired
-    SecurityDao securityDao;
+     SecurityDao securityDao;
 
-    @Autowired
-    PasswordEncryption passwordEncryption;
+     PasswordEncryption passwordEncryption;
 
+    @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void createUser(User user) {
         if( user.getPassword() != null ){
@@ -37,10 +36,12 @@ public class SecurityService implements UserDetailsService{
     }
 
 
+    @Override
     public User loadUser(Long userId) {
         return securityDao.loadUser(userId);
     }
 
+    @Override
     public List<Role> loadAllRoles() {
         return securityDao.loadAllRoles();
     }
@@ -54,12 +55,22 @@ public class SecurityService implements UserDetailsService{
         return userDetails;
     }
 
+    @Override
     public int increaseLoginTries(Long userId) {
         return securityDao.increaseLoginTries(userId);
     }
 
+    @Override
     public int updateLastLoginInfoForUser(Long userId) {
         return securityDao.updateLastLoginInfoForUser(userId);
 
+    }
+
+    public void setSecurityDao(SecurityDao securityDao) {
+        this.securityDao = securityDao;
+    }
+
+    public void setPasswordEncryption(PasswordEncryption passwordEncryption) {
+        this.passwordEncryption = passwordEncryption;
     }
 }
